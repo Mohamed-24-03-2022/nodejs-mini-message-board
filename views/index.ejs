@@ -3,9 +3,9 @@
   <div id="messages">
     <% messages.forEach(msg=> {%>
 
-      <div class="message">
+      <div class="message" data-set-id=<%=msg.id%> >
         <span class="user">
-          <%=msg.user%>
+          <%=msg.username%>
         </span>
         <div class="text">
           <%=msg.text%>
@@ -13,11 +13,13 @@
         <div class="time">
           <%=msg.added%>
         </div>
-      </div>
 
+        <form action="/<%=msg.id%>/delete" method="POST"> <button type="submit"
+            class="delete-btn">Delete</button></form>
+      </div>
       <%});%>
   </div>
-  <button ><a href="/new"> Add a message</a></button>
+  <button><a href="/new"> Add a message</a></button>
 
 
   <%- include('layout/footer', {})%>

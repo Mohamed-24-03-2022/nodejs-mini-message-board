@@ -1,18 +1,28 @@
-const indexController = require('./indexController');
+
+const { body, validationResult } = require('express-validator');
+
+const { insertMessage } = require('../db/queries');
 
 const get = function (req, res, next) {
   res.render('form', { title: "Add a new message" });
 }
 
-const post = function (req, res, next) {
+const post = [
+  body('user')
+    .trim()
+    .isAlpha(),
+  body('text')
+    .trim()
+    .isAlpha(),
+  async function (req, res, next) {
+    const { user, text } = req.body
+    const added = new Date();
 
-  const { text, user } = req.body
-  const added = new Date();
+    await insertMessage(user, text, added.toISOString());
 
-  indexController.messages.push({ text, user, added })
-
-  res.redirect('/');
-}
+    res.redirect('/');
+  }
+]
 
 
 module.exports = { get, post }

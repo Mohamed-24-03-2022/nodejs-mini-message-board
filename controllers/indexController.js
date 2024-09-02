@@ -1,38 +1,15 @@
-const messages = [
-  {
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date()
-  },
-  {
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date()
-  },
-  {
-    text: "Good morning everyone!",
-    user: "Emily",
-    added: new Date()
-  },
-  {
-    text: "Just joined the chat!",
-    user: "David",
-    added: new Date()
-  },
-  {
-    text: "Nice to meet you all!",
-    user: "Sophia",
-    added: new Date()
-  },
-  {
-    text: "Looking forward to learning with you!",
-    user: "Oliver",
-    added: new Date()
-  }
-];
+const { getAllMessages, deleteMessageById } = require('../db/queries');
 
-const getMessages = function (req, res, next) {
+const getMessages = async function (req, res, next) {
+  const messages = await getAllMessages()
   res.render('index', { title: "Mini Messageboard", messages });
 }
 
-module.exports = { messages, getMessages }
+const deleteMessagePost = async function (req, res, next) {
+
+  await deleteMessageById(Number(req.params.id));
+  res.redirect('/');
+
+}
+
+module.exports = { getMessages, deleteMessagePost }
